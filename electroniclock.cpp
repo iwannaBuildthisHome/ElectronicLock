@@ -14,10 +14,14 @@
 
 
 
-ElectronicLock::ElectronicLock(int _code):code(_code)
+ElectronicLock::ElectronicLock(int _code)
 {
-	m_lock = code;
-	progMode = code;
+	
+	code = _code;
+	m_lock = lockOn::progMode;
+	int y;
+	/*lock = code;;
+	mode = lockOn::progMode;*/
 }
 ElectronicLock::~ElectronicLock()
 {
@@ -48,43 +52,49 @@ ElectronicLock&ElectronicLock::operator = (ElectronicLock && _lock)
 
 }
 
-bool ElectronicLock::isInProgrammingMode()
-{     /*m_lock*/;
-
-if (code!=m_lock)
+bool ElectronicLock::isInProgrammingMode()const
 {
-	return false;
-}
-else
-{
-	workMode = m_lock;
-	return true;
-}
-
-
-}
-
-bool ElectronicLock::toggleProgrammingMode(int _programmingCode) {
-	std::cin >> code;
-	_programmingCode = code;
-	if (_programmingCode == m_lock)
+	if (!lockOn::progMode)
+		return false;
+	else
+		return true;
+	/*if (m_lock == lockOn::workMode)
+	{
+		return workMode;
+	}
+	else if (m_lock == lockOn::progMode)
+	{
+		return progMode;
+	}
+	else if (m_lock == lockOn::progMode)
 	{
 		return true;
 	}
-	else if (_programmingCode != m_lock)
-	{
-		//progMode = m_lock;
-		return true;
-	}
-	else if (_programmingCode != workMode)
+	else if(m_lock != lockOn::progMode)
 	{
 		return false;
-	}
+	}*/
+	
+}
 
-	else if (_programmingCode != progMode)
-	{
-		return false;
-	}
+	bool ElectronicLock::toggleProgrammingMode(int _programmingCode) const
+{
+		int y;
+		
+		if (m_lock != workMode)
+		{
+			m_lock == workMode;
+			return true;
+		}
+		else if (!_programmingCode)
+		{
+			return false;
+		}
+		else if(m_lock != progMode)
+		{
+			m_lock == progMode;
+			return true;
+		}
 
 }
 int ElectronicLock::registerCode(int _newCode)
