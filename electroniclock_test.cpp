@@ -59,7 +59,7 @@ DECLARE_OOP_TEST( electroniclock_test_register_single_code )
 DECLARE_OOP_TEST( electroniclock_test_register_few_codes )
 {
 	ElectronicLock lock( 123 );
-	lock.registerCode( 11111 );
+	 lock.registerCode( 11111 );
 	lock.registerCode( 22222 );
 	lock.registerCode( 33333 );
 	lock.toggleProgrammingMode( 123 );

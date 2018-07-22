@@ -9,12 +9,18 @@ enum lockOn
 		progMode = 1, 
 		workMode
 	};
+struct  IntegerSet;
 class ElectronicLock
 {
- private:
-	 int code;
-     int m_lock;
+private:
+
+    lockOn mode; 
+	IntegerSet * nCode;
 public:
+	 lockOn GetState()
+	{
+		return mode;
+	}
    
 	/*ElectronicLock GetOn() 
 	{
@@ -24,7 +30,8 @@ public:
 	{
 		this->m_lock = m_lock;
 	}*/
-   
+	
+
 	ElectronicLock(int _code);
 	~ElectronicLock();
 	ElectronicLock(const ElectronicLock & _lock);
@@ -33,15 +40,26 @@ public:
 	ElectronicLock & operator = (ElectronicLock && _lock);
 
     bool isInProgrammingMode() const;
-	bool toggleProgrammingMode(int _programmingCode) const;
-	int registerCode(int _newCode);
-	int unregisterCode(int _delPrevCode);
+	bool toggleProgrammingMode(int _programmingCode);
+	void registerCode(int _newCode);
+	void unregisterCode(int _delPrevCode);
 	int changeProgrammingCode(int _change);
-	int tryUnlocking(int _codeKey);
+	bool tryUnlocking(int _codeKey);
 	const char * tryUnlocking();
 	bool  operator ==( ElectronicLock _l)const ;
 	bool  operator !=( ElectronicLock _l)const ;
 };
+struct IntegerSet;
+IntegerSet *  IntegerSetCreate();
+void IntegerSetDestroy(IntegerSet * _pSet);
+void IntegerSetClear(IntegerSet & _set);
+bool IntegerSetIsEmpty(const IntegerSet & _set);
+int IntegerSetSize(const IntegerSet & _set);
+bool IntegerSetHasKey(const IntegerSet & _set, int _key);
+void IntegerSetInsertKey(IntegerSet & _set, int _key);
+void IntegerSetRemoveKey(IntegerSet & _set, int _key);
+//void IntegerSetInsertAllKeys(const IntegerSet & _sourceSet, IntegerSet & _targetSet);
+
 
 
 /*****************************************************************************/
