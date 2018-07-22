@@ -43,7 +43,7 @@ public:
 	bool toggleProgrammingMode(int _programmingCode);
 	void registerCode(int _newCode);
 	void unregisterCode(int _delPrevCode);
-	int changeProgrammingCode(int _change);
+	bool changeProgrammingCode(int _change);
 	bool tryUnlocking(int _codeKey);
 	const char * tryUnlocking();
 	bool  operator ==( ElectronicLock _l)const ;

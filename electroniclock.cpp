@@ -71,7 +71,7 @@ void IntegerSetRemoveKey(IntegerSet & _set, int _key)
 		pNode = pNode->m_pNext;
 		
 	}
-	assert(!"Hey is unavailible!");
+	//assert(!"Key is unavailible!");
 }
 
 //void IntegerSetInsertAllKeys(const IntegerSet & _sourceSet, IntegerSet & _targetSet)
@@ -172,10 +172,19 @@ void ElectronicLock::registerCode(int _newCode)
 }
 void ElectronicLock::unregisterCode(int _delPrevCode)
 {
+	if (mode != lockOn::progMode) {
+		throw std::logic_error("Not in programming mode");
+	}
+	IntegerSetRemoveKey(*nCode, _delPrevCode);
+	//assert(IntegerSetHasKey(*nCode, _delPrevCode));
 
 }
-int ElectronicLock::changeProgrammingCode(int _change)
+bool ElectronicLock::changeProgrammingCode(int _change)
 {
+	if (mode != lockOn::progMode)
+		throw std::logic_error("Not in programming mode");
+	if(IntegerSetHasKey(*nCode, _change));
+	assert(_change);
 	return 0;
 }
 
