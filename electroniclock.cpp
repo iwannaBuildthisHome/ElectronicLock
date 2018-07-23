@@ -32,6 +32,7 @@ void IntegerSetDestroy(IntegerSet * _pSet)
 }
 void IntegerSetClear(IntegerSet & _set)
 {
+	// Очищаем внутренний список
 	IntegerListClear(_set.m_data);
 }
 bool IntegerSetIsEmpty(const IntegerSet & _set)
@@ -71,8 +72,24 @@ void IntegerSetRemoveKey(IntegerSet & _set, int _key)
 		pNode = pNode->m_pNext;
 		
 	}
-	//assert(!"Key is unavailible!");
 }
+//void IntegerSetRemoveKey(IntegerSet & _set, int _key)
+//{
+//	IntegerList::Node * pNode = _set.m_data.m_pFirst;
+//	while (pNode)
+//	{
+//		if (pNode->m_value != _key)
+//		{
+//			IntegerListDeleteNode(_set.m_data, pNode);
+//			return;
+//		}
+//		pNode = pNode->m_pNext;
+//
+//	}
+//	assert(!"Key is unavailible!");
+//}
+
+
 
 //void IntegerSetInsertAllKeys(const IntegerSet & _sourceSet, IntegerSet & _targetSet)
 //{
@@ -94,16 +111,16 @@ ElectronicLock::~ElectronicLock()
 {
 	IntegerSetDestroy(nCode);
 }
-ElectronicLock::ElectronicLock(const ElectronicLock & _lock)
+ElectronicLock::ElectronicLock(const ElectronicLock & _lock):nCode(_lock.nCode)
 {
 }
 ElectronicLock&ElectronicLock::operator = (const ElectronicLock & _lock)
 {
-	if (&_lock == this)
+	if ( this==&_lock)
 		return *this;
-
+	
 }
-ElectronicLock::ElectronicLock(ElectronicLock && _lock)
+ElectronicLock::ElectronicLock(ElectronicLock && _lock):nCode(std::move(_lock.nCode))
 {
 
 }
@@ -140,12 +157,16 @@ bool ElectronicLock::isInProgrammingMode()const
 }
 
 	bool ElectronicLock::toggleProgrammingMode(int _programmingCode)
-{		
+	{
+		
 		if (!IntegerSetHasKey(*nCode, _programmingCode))
 		
 			return false;
 		mode = (mode == lockOn::progMode) ? lockOn::workMode : lockOn::progMode;
 		return true;
+		
+		/*if (changeProgrammingCode(_programmingCode));
+		return false;*/
 		
 		/*if (_programmingCode != code)
 			return false;
@@ -176,15 +197,18 @@ void ElectronicLock::unregisterCode(int _delPrevCode)
 		throw std::logic_error("Not in programming mode");
 	}
 	IntegerSetRemoveKey(*nCode, _delPrevCode);
-	//assert(IntegerSetHasKey(*nCode, _delPrevCode));
+	assert(!IntegerSetHasKey(*nCode, _delPrevCode));
+	
 
 }
 bool ElectronicLock::changeProgrammingCode(int _change)
 {
 	if (mode != lockOn::progMode)
 		throw std::logic_error("Not in programming mode");
-	if(IntegerSetHasKey(*nCode, _change));
-	assert(_change);
+	IntegerSetClear(*nCode);
+	IntegerSetInsertKey(*nCode, _change);
+
+
 	return 0;
 }
 
@@ -228,9 +252,15 @@ const char * ElectronicLock::tryUnlocking()
 
 bool ElectronicLock::operator == ( ElectronicLock _l)const
 {
-	return false;
+
+	return (nCode == _l.nCode);
+	 
+		
+
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {
+
 	return false;
+	 
 }

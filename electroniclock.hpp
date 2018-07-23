@@ -52,7 +52,7 @@ public:
 struct IntegerSet;
 IntegerSet *  IntegerSetCreate();
 void IntegerSetDestroy(IntegerSet * _pSet);
-void IntegerSetClear(IntegerSet & _set);
+void IntegerSetClear(IntegerSet & _set); 
 bool IntegerSetIsEmpty(const IntegerSet & _set);
 int IntegerSetSize(const IntegerSet & _set);
 bool IntegerSetHasKey(const IntegerSet & _set, int _key);
