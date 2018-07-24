@@ -45,7 +45,7 @@ public:
 	void unregisterCode(int _delPrevCode);
 	bool changeProgrammingCode(int _change);
 	bool tryUnlocking(int _codeKey);
-	const char * tryUnlocking();
+	bool tryUnlocking(const char * _str);
 	bool  operator ==( ElectronicLock _l)const ;
 	bool  operator !=( ElectronicLock _l)const ;
 };

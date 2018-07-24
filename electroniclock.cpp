@@ -1,5 +1,5 @@
 // (C) 2013-2015, Sergei Zaychenko, KNURE, Kharkiv, Ukraine
-
+#include <stdio.h> 
 #include "electroniclock.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -8,6 +8,7 @@
 #include <string>
 #include "Header.h"
 #include <cassert>
+#include <sstream>
 /*****************************************************************************/
 
     // TODO ...
@@ -215,11 +216,52 @@ bool ElectronicLock::tryUnlocking(int _codeKey)
 
 }
 
-
-const char * ElectronicLock::tryUnlocking()
+bool ElectronicLock::tryUnlocking(const char * _str)
 {
-	return 0;
+	std::ostringstream ss;
+	ss << nCode;
+    char * cstr = new char[ss.str().length() + 1];
+		strcpy(cstr, ss.str().c_str());
+    return cstr;	
+	if (IntegerSetHasKey(*nCode, *_str))
+		return true;
+	else
+		throw std::logic_error("Bad format");
+	
 }
+   /* int nCode;
+    nCode = static_cast<int>(nCode);
+	ss << nCode;*/
+/*
+		if (ss == _str)*/
+			
+		/*else
+			return false;
+*/
+
+
+	//char buf[6]{};
+	//	sprintf(buf, "%d", nCode);
+	//	const char * cstr = buf;
+	//	printf("%s\n", cstr);
+	//	return cstr;
+
+
+
+
+		/*cstr = static_cast<IntegerSet*>(nCode)*/
+	/*if(cstr == static_cast<IntegerSet*>(nCode))
+	{
+		
+	}*/
+	/*if (nCode != reinterpret_cast<IntegerSet*>(*_str));
+	{
+		return false;
+	}*/
+		
+	
+
+
 
 bool ElectronicLock::operator == ( ElectronicLock _l)const
 {
