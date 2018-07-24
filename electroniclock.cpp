@@ -252,15 +252,13 @@ const char * ElectronicLock::tryUnlocking()
 
 bool ElectronicLock::operator == ( ElectronicLock _l)const
 {
-
+	
 	return (nCode == _l.nCode);
-	 
-		
 
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {
 
-	return false;
+	return !(*this == _l);;
 	 
 }
