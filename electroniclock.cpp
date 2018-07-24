@@ -32,7 +32,6 @@ void IntegerSetDestroy(IntegerSet * _pSet)
 }
 void IntegerSetClear(IntegerSet & _set)
 {
-	// Очищаем внутренний список
 	IntegerListClear(_set.m_data);
 }
 bool IntegerSetIsEmpty(const IntegerSet & _set)
@@ -73,33 +72,7 @@ void IntegerSetRemoveKey(IntegerSet & _set, int _key)
 		
 	}
 }
-//void IntegerSetRemoveKey(IntegerSet & _set, int _key)
-//{
-//	IntegerList::Node * pNode = _set.m_data.m_pFirst;
-//	while (pNode)
-//	{
-//		if (pNode->m_value != _key)
-//		{
-//			IntegerListDeleteNode(_set.m_data, pNode);
-//			return;
-//		}
-//		pNode = pNode->m_pNext;
-//
-//	}
-//	assert(!"Key is unavailible!");
-//}
 
-
-
-//void IntegerSetInsertAllKeys(const IntegerSet & _sourceSet, IntegerSet & _targetSet)
-//{
-//	IntegerList::Node * pNode = _sourceSet.m_data.m_pFirst;
-//	while (pNode)
-//	{
-//		IntegerSetInsertKey(_targetSet, pNode->m_value);
-//		pNode = pNode->m_pNext;
-//	}
-//}
 
 ElectronicLock::ElectronicLock(int _code)
 {
@@ -165,8 +138,6 @@ bool ElectronicLock::isInProgrammingMode()const
 		mode = (mode == lockOn::progMode) ? lockOn::workMode : lockOn::progMode;
 		return true;
 		
-		/*if (changeProgrammingCode(_programmingCode));
-		return false;*/
 		
 		/*if (_programmingCode != code)
 			return false;

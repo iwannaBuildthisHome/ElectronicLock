@@ -58,7 +58,6 @@ int IntegerSetSize(const IntegerSet & _set);
 bool IntegerSetHasKey(const IntegerSet & _set, int _key);
 void IntegerSetInsertKey(IntegerSet & _set, int _key);
 void IntegerSetRemoveKey(IntegerSet & _set, int _key);
-//void IntegerSetInsertAllKeys(const IntegerSet & _sourceSet, IntegerSet & _targetSet);
 
 
 
