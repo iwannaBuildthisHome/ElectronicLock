@@ -10,6 +10,7 @@
 #include <cassert>
 #include <sstream>
 #include <set>
+#include <cctype>
 /*****************************************************************************/
 
     // TODO ...
@@ -85,18 +86,31 @@ int IntegerSetSize(const IntegerSet & _set)
 
 	return nElements;
 }
-bool IntegerSetEqual(const IntegerSet  & lock1, const IntegerSet  & lock2)
+bool IntegerSetEqual(const IntegerSet  & set1, const IntegerSet  & set2)
 {
-	IntegerList::Node * pNode = lock1.m_data.m_pFirst;
+	int size1 = IntegerSetSize(set1);
+	int size2 = IntegerSetSize(set2);
+	if (size1 != size2)
+		return false;
+
+	IntegerList::Node * cNode = set1.m_data.m_pFirst;
+	while (cNode)
+	{
+		if (!IntegerSetHasKey(set2, cNode->m_value))
+			return false;
+		cNode = cNode->m_pNext;
+	}
+	return true;
+	/*IntegerList::Node * pNode = lock1.m_data.m_pFirst;
 	while(pNode)
-		if (!IntegerSetHasKey(lock2, pNode->m_value) && IntegerSetSize(lock2))
+		if (!IntegerSetHasKey(lock2, pNode->m_value))
 		{
 			return false;
 			pNode = pNode->m_pNext;
 		}
 	else
 		return true;
-
+*/
 
 }
 	/*int size1 = IntegerSetSize(lock1);
@@ -252,17 +266,42 @@ bool ElectronicLock::tryUnlocking(int _codeKey)
 
 bool ElectronicLock::tryUnlocking(const char * _str)
 {
-	std::ostringstream ss;
-	ss << nCode;
-    char * cstr = new char[ss.str().length() + 1];
-		strcpy(cstr, ss.str().c_str());
-		return cstr;
-	/*if (IntegerSetHasKey(*nCode, *_str))
-		return true;*/
-	if (cstr != _str)
-	{
+	std::stringstream ss;
+	ss << _str;
+	unsigned int code;
+	ss >> code;
+
+	int pCode = 0;
+	std::string item(_str);
+	sscanf(item.c_str(),"%d", &pCode);
+  
+	if (!isdigit(_str[0]))
 		throw std::logic_error("Bad format");
-	} 
+
+	if (!IntegerSetHasKey(*nCode, code))
+	{  
+		return false;
+	}
+	if(IntegerSetHasKey(*nCode, code))
+	{
+		return true;
+	}
+	
+
+	/*else 
+		throw std::logic_error("Bad format");*/
+
+	//std::ostringstream ss;
+	//ss << nCode;
+ //   char * cstr = new char[ss.str().length() + 1];
+	//	strcpy(cstr, ss.str().c_str());
+	//	return cstr;
+	///*if (IntegerSetHasKey(*nCode, *_str))
+	//	return true;*/
+	//if (cstr != _str)
+	//{
+	//	throw std::logic_error("Bad format");
+	//} 
 }
    /* int nCode;
     nCode = static_cast<int>(nCode);
@@ -296,15 +335,18 @@ bool ElectronicLock::tryUnlocking(const char * _str)
 		
 	
 
-bool ElectronicLock::operator == ( ElectronicLock _l)const
+bool ElectronicLock::operator == ( ElectronicLock _l) const
 {
-	
-	
-	return false;
+
+	if (IntegerSetEqual(*_l.nCode, *this->nCode))
+	{
+		if (mode == lockOn::workMode || mode == lockOn::progMode)
+			return true;
+	}
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {
-
-	return !(*this == _l);;
+	return !(*this == _l);
+	
 	 
 }

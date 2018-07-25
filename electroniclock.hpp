@@ -47,7 +47,7 @@ int IntegerSetSize(const IntegerSet & _set);
 bool IntegerSetHasKey(const IntegerSet & _set, int _key);
 void IntegerSetInsertKey(IntegerSet & _set, int _key);
 void IntegerSetRemoveKey(IntegerSet & _set, int _key);
-bool IntegerSetEqual (const IntegerSet  & lock1, IntegerSet  & lock2);
+bool IntegerSetEqual (const IntegerSet  & set1,const IntegerSet  & set2);
 
 
 
