@@ -9,6 +9,7 @@
 #include "Header.h"
 #include <cassert>
 #include <sstream>
+#include <set>
 /*****************************************************************************/
 
     // TODO ...
@@ -39,10 +40,7 @@ bool IntegerSetIsEmpty(const IntegerSet & _set)
 {
 	return IntegerListIsEmpty(_set.m_data);
 }
-int IntegerSetSize(const IntegerSet & _set)
-{
-	return IntegerListSize(_set.m_data);
-}
+
 bool IntegerSetHasKey(const IntegerSet & _set, int _key)
 {
 	IntegerList::Node * pNode = _set.m_data.m_pFirst;
@@ -73,6 +71,42 @@ void IntegerSetRemoveKey(IntegerSet & _set, int _key)
 		
 	}
 }
+
+
+int IntegerSetSize(const IntegerSet & _set)
+{
+	int nElements = 0;
+	const IntegerList::Node * pNode = _set.m_data.m_pFirst;
+	while (pNode)
+	{
+		++nElements;
+		pNode = pNode->m_pNext;
+	}
+
+	return nElements;
+}
+bool IntegerSetEqual(const IntegerSet  & lock1, const IntegerSet  & lock2)
+{
+	IntegerList::Node * pNode = lock1.m_data.m_pFirst;
+	while(pNode)
+		if (!IntegerSetHasKey(lock2, pNode->m_value) && IntegerSetSize(lock2))
+		{
+			return false;
+			pNode = pNode->m_pNext;
+		}
+	else
+		return true;
+
+
+}
+	/*int size1 = IntegerSetSize(lock1);
+
+	IntegerSetSize(lock2);
+	if(IntegerSetSize(lock1)==IntegerSetSize(lock2));
+	return true;*/
+	
+
+
 
 
 ElectronicLock::ElectronicLock(int _code)
@@ -222,12 +256,13 @@ bool ElectronicLock::tryUnlocking(const char * _str)
 	ss << nCode;
     char * cstr = new char[ss.str().length() + 1];
 		strcpy(cstr, ss.str().c_str());
-    return cstr;	
-	if (IntegerSetHasKey(*nCode, *_str))
-		return true;
-	else
+		return cstr;
+	/*if (IntegerSetHasKey(*nCode, *_str))
+		return true;*/
+	if (cstr != _str)
+	{
 		throw std::logic_error("Bad format");
-	
+	} 
 }
    /* int nCode;
     nCode = static_cast<int>(nCode);
@@ -261,13 +296,11 @@ bool ElectronicLock::tryUnlocking(const char * _str)
 		
 	
 
-
-
 bool ElectronicLock::operator == ( ElectronicLock _l)const
 {
 	
-	return (nCode == _l.nCode);
-
+	
+	return false;
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {

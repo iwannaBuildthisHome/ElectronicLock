@@ -21,17 +21,6 @@ public:
 	{
 		return mode;
 	}
-   
-	/*ElectronicLock GetOn() 
-	{
-		return m_lock;
-	}
-	void SetOn(lockOn m_lock)
-	{
-		this->m_lock = m_lock;
-	}*/
-	
-
 	ElectronicLock(int _code);
 	~ElectronicLock();
 	ElectronicLock(const ElectronicLock & _lock);
@@ -58,6 +47,8 @@ int IntegerSetSize(const IntegerSet & _set);
 bool IntegerSetHasKey(const IntegerSet & _set, int _key);
 void IntegerSetInsertKey(IntegerSet & _set, int _key);
 void IntegerSetRemoveKey(IntegerSet & _set, int _key);
+bool IntegerSetEqual (const IntegerSet  & lock1, IntegerSet  & lock2);
+
 
 
 
