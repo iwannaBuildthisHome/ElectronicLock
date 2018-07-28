@@ -137,9 +137,10 @@ ElectronicLock::ElectronicLock(const ElectronicLock & _lock):nCode(_lock.nCode)
 {
 }
 ElectronicLock&ElectronicLock::operator = (const ElectronicLock & _lock)
-{
-	if ( this==&_lock)
+{  
+	if (&_lock != this)
 		return *this;
+	
 	
 }
 ElectronicLock::ElectronicLock(ElectronicLock && _lock):nCode(std::move(_lock.nCode))
@@ -157,7 +158,7 @@ ElectronicLock&ElectronicLock::operator = (ElectronicLock && _lock)
 bool ElectronicLock::isInProgrammingMode()const
 {
 	return mode == lockOn::progMode;
-	/*switch(mode)
+    /*switch(mode)
 	{
 	case lockOn::progMode:
 		return true;
@@ -166,16 +167,6 @@ bool ElectronicLock::isInProgrammingMode()const
 		return false;
 			break;
 	}*/
-	
-	//if (!mode)
-	//{
-	//	/*return mode == lockOn::progMode;*/
-	//	return false;
-	//}
-	//else if (mode == lockOn::progMode)/*if (mode != lockOn::progMode)*/
-	//{
-	//	return true;
-	//}
 }
 
 	bool ElectronicLock::toggleProgrammingMode(int _programmingCode)
@@ -337,16 +328,17 @@ bool ElectronicLock::tryUnlocking(const char * _str)
 
 bool ElectronicLock::operator == ( ElectronicLock _l) const
 {
-
-	if (IntegerSetEqual(*_l.nCode, *this->nCode))
-	{
-		if (mode == lockOn::workMode || mode == lockOn::progMode)
+	//IntegerSetDestroy(_l.nCode);
+	if (IntegerSetEqual(*_l.nCode, *this->nCode)) {
+		if (mode == lockOn::progMode || mode == lockOn::workMode)
 			return true;
 	}
+
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {
-	return !(*this == _l);
-	
+	//std::set<int >(_l);
+	if (!IntegerSetEqual(*_l.nCode, *this->nCode))
+	  return false;
 	 
 }
