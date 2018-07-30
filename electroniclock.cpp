@@ -149,13 +149,16 @@ ElectronicLock::ElectronicLock(ElectronicLock & _lock)
 	nCode = IntegerSetCopy(_lock.nCode);
 }
 ElectronicLock& ElectronicLock::operator = (const ElectronicLock & _lock)
-{  
-	if (this == &_lock)
+{
+	/*if (this == &_lock)
 		return * this;
 	IntegerSetCopy(_lock.nCode);
 
-		return * this;
+		return * this;*/
 	
+		delete nCode;
+		nCode = new IntegerSet(*_lock.nCode);
+		return *this;
 }
 ElectronicLock::ElectronicLock(ElectronicLock && _lock):mode(std::move(_lock.mode))
 {
