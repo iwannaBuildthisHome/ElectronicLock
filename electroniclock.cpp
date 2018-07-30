@@ -82,8 +82,6 @@ IntegerSet * IntegerSetCopy(const IntegerSet * const _pSet) {
 	}
 	return result;
 }
-
-
 int IntegerSetSize(const IntegerSet & _set)
 {
 	int nElements = 0;
@@ -111,26 +109,7 @@ bool IntegerSetEqual(const IntegerSet  & set1, const IntegerSet  & set2)
 		cNode = cNode->m_pNext;
 	}
 	return true;
-	/*IntegerList::Node * pNode = lock1.m_data.m_pFirst;
-	while(pNode)
-		if (!IntegerSetHasKey(lock2, pNode->m_value))
-		{
-			return false;
-			pNode = pNode->m_pNext;
-		}
-	else
-		return true;
-*/
-
 }
-	/*int size1 = IntegerSetSize(lock1);
-
-	IntegerSetSize(lock2);
-	if(IntegerSetSize(lock1)==IntegerSetSize(lock2));
-	return true;*/
-	
-
-
 
 
 ElectronicLock::ElectronicLock(int _code)
@@ -150,55 +129,44 @@ ElectronicLock::ElectronicLock(ElectronicLock & _lock)
 }
 ElectronicLock& ElectronicLock::operator = (const ElectronicLock & _lock)
 {
-	/*if (this == &_lock)
+	if (this == &_lock)
 		return * this;
-	IntegerSetCopy(_lock.nCode);
-
-		return * this;*/
-	
+	else
+	{
 		delete nCode;
 		nCode = new IntegerSet(*_lock.nCode);
+		mode = lockOn::workMode;
 		return *this;
+	}
 }
-ElectronicLock::ElectronicLock(ElectronicLock && _lock):mode(std::move(_lock.mode))
+ElectronicLock::ElectronicLock(ElectronicLock && _lock)
+	:nCode(std::move(_lock.nCode)), mode(std::move(_lock.mode))
 {
-
+	//IntegerSetCopy(_lock.nCode);
+	_lock.nCode = nullptr;
 }
 ElectronicLock&ElectronicLock::operator = (ElectronicLock && _lock) 
 {
 	if (& _lock == this)
 		return *this;
-	std::swap(nCode, _lock.nCode);
-	return * this;
-	/*IntegerSet * Code = _lock.nCode;
-	_lock.nCode = nCode;
-	nCode = Code;
-	return *this;*/
+	else
+	{
+		std::swap(nCode, _lock.nCode);
+		std::swap(mode, _lock.mode);
+		return *this;
+	}
 }
 
 bool ElectronicLock::isInProgrammingMode()const
 {
 	return mode == lockOn::progMode;
-    /*switch(mode)
-	{
-	case lockOn::progMode:
-		return true;
-			break;
-	case lockOn::workMode:
-		return false;
-			break;
-	}*/
 }
-
 	bool ElectronicLock::toggleProgrammingMode(int _programmingCode)
 	{
-		
 		if (!IntegerSetHasKey(*nCode, _programmingCode))
-		
 			return false;
 		mode = (mode == lockOn::progMode) ? lockOn::workMode : lockOn::progMode;
 		return true;
-		
 		
 		/*if (_programmingCode != code)
 			return false;
@@ -230,8 +198,6 @@ void ElectronicLock::unregisterCode(int _delPrevCode)
 	}
 	IntegerSetRemoveKey(*nCode, _delPrevCode);
 	assert(!IntegerSetHasKey(*nCode, _delPrevCode));
-	
-
 }
 bool ElectronicLock::changeProgrammingCode(int _change)
 {
@@ -239,41 +205,24 @@ bool ElectronicLock::changeProgrammingCode(int _change)
 		throw std::logic_error("Not in programming mode");
 	IntegerSetClear(*nCode);
 	IntegerSetInsertKey(*nCode, _change);
-
-
 	return 0;
 }
 
 bool ElectronicLock::tryUnlocking(int _codeKey)
 {
-
 	if (mode == lockOn::progMode)
 	{
 		throw std::logic_error("Not in operational mode");
 	}
-	if (IntegerSetHasKey(*nCode, _codeKey)) {
+	if (nCode == nullptr)
+	{
+		return false;
+	}
+	if (IntegerSetHasKey(*nCode, _codeKey)) 
+	{
 		return true;
 	}
 	return false;
-	/*if (_codeKey == code)
-		mode = lockOn::workMode;            
-    if (_codeKey != code)
-	{	
-		return false;
-	}
-
-	if (mode == lockOn::progMode)
-	{
-		throw std::logic_error("Not in operational mode");
-	}
-	if (mode == lockOn::workMode)
-		return true;
-	
-	
-	
-	
-	return 0;*/
-
 }
 
 bool ElectronicLock::tryUnlocking(const char * _str)
@@ -298,65 +247,20 @@ bool ElectronicLock::tryUnlocking(const char * _str)
 	{
 		return true;
 	}
-	
-
-	/*else 
-		throw std::logic_error("Bad format");*/
-
 	//std::ostringstream ss;
 	//ss << nCode;
  //   char * cstr = new char[ss.str().length() + 1];
 	//	strcpy(cstr, ss.str().c_str());
 	//	return cstr;
-	///*if (IntegerSetHasKey(*nCode, *_str))
-	//	return true;*/
-	//if (cstr != _str)
-	//{
-	//	throw std::logic_error("Bad format");
-	//} 
 }
-   /* int nCode;
-    nCode = static_cast<int>(nCode);
-	ss << nCode;*/
-/*
-		if (ss == _str)*/
-			
-		/*else
-			return false;
-*/
-
-
-	//char buf[6]{};
-	//	sprintf(buf, "%d", nCode);
-	//	const char * cstr = buf;
-	//	printf("%s\n", cstr);
-	//	return cstr;
-
-
-
-
-		/*cstr = static_cast<IntegerSet*>(nCode)*/
-	/*if(cstr == static_cast<IntegerSet*>(nCode))
-	{
-		
-	}*/
-	/*if (nCode != reinterpret_cast<IntegerSet*>(*_str));
-	{
-		return false;
-	}*/
-		
-	
-
+  
 bool ElectronicLock::operator == ( ElectronicLock _l) const
 {
-	//IntegerSetDestroy(_l.nCode);
 	if (IntegerSetEqual(*_l.nCode, *this->nCode)){
 			return true;
 	}
-
 }
 bool ElectronicLock::operator != ( ElectronicLock _l)const
 {
 	return !(*this == _l);
-	 
 }
