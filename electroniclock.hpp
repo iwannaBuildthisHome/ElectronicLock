@@ -23,7 +23,7 @@ public:
 	}
 	ElectronicLock(int _code);
 	~ElectronicLock();
-	ElectronicLock(const ElectronicLock & _lock);
+	ElectronicLock(ElectronicLock & _lock);
 	ElectronicLock & operator = ( const ElectronicLock & _lock) ;
 	ElectronicLock(ElectronicLock && _lock);
 	ElectronicLock & operator = (ElectronicLock && _lock);
@@ -48,6 +48,7 @@ bool IntegerSetHasKey(const IntegerSet & _set, int _key);
 void IntegerSetInsertKey(IntegerSet & _set, int _key);
 void IntegerSetRemoveKey(IntegerSet & _set, int _key);
 bool IntegerSetEqual (const IntegerSet  & set1,const IntegerSet  & set2);
+IntegerSet * IntegerSetCopy(const IntegerSet * const _pSet);
 
 
 

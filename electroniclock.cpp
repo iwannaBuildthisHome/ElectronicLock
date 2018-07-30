@@ -73,6 +73,16 @@ void IntegerSetRemoveKey(IntegerSet & _set, int _key)
 	}
 }
 
+IntegerSet * IntegerSetCopy(const IntegerSet * const _pSet) {
+	IntegerSet * result = IntegerSetCreate();
+	IntegerList::Node * pElement = _pSet->m_data.m_pFirst;
+	while (pElement) {
+		IntegerListPushBack(result->m_data, pElement->m_value);
+		pElement = pElement->m_pNext;
+	}
+	return result;
+}
+
 
 int IntegerSetSize(const IntegerSet & _set)
 {
@@ -133,18 +143,21 @@ ElectronicLock::~ElectronicLock()
 {
 	IntegerSetDestroy(nCode);
 }
-ElectronicLock::ElectronicLock(const ElectronicLock & _lock):nCode(_lock.nCode)
+ElectronicLock::ElectronicLock(ElectronicLock & _lock)
+	:mode(_lock.mode)
 {
-
+	nCode = IntegerSetCopy(_lock.nCode);
 }
-ElectronicLock&ElectronicLock::operator = (const ElectronicLock & _lock)
+ElectronicLock& ElectronicLock::operator = (const ElectronicLock & _lock)
 {  
-	if (&_lock == this)
+	if (this == &_lock)
 		return * this;
-	 
+	IntegerSetCopy(_lock.nCode);
+
+		return * this;
 	
 }
-ElectronicLock::ElectronicLock(ElectronicLock && _lock):nCode(std::move(_lock.nCode))
+ElectronicLock::ElectronicLock(ElectronicLock && _lock):mode(std::move(_lock.mode))
 {
 
 }
