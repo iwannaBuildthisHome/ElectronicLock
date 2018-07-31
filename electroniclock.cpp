@@ -120,7 +120,8 @@ ElectronicLock::ElectronicLock(int _code)
 }
 ElectronicLock::~ElectronicLock()
 {
-	IntegerSetDestroy(nCode);
+	//IntegerSetDestroy(nCode);
+	delete nCode;
 }
 ElectronicLock::ElectronicLock(ElectronicLock & _lock)
 	:mode(_lock.mode)
@@ -154,6 +155,7 @@ ElectronicLock&ElectronicLock::operator = (ElectronicLock && _lock)
 		std::swap(nCode, _lock.nCode);
 		std::swap(mode, _lock.mode);
 		return *this;
+		delete nCode;
 	}
 }
 
